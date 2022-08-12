@@ -625,7 +625,7 @@ class MenuBar extends React.Component {
                             <SaveStatus />
                         )}
                     </div>
-                    { true ? (
+                    {this.props.sessionExists ? (
                         this.props.username ? (
                             // ************ user is logged in ************
                             <React.Fragment>

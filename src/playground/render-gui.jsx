@@ -115,12 +115,12 @@ export default appTarget => {
                 backpackVisible
                 showComingSoon={false}
                 backpackHost={backpackHost}
-                canSave
-                username={'noxue'}
-                renderLogin={()=>{return "xxxx"}}
+                // canSave
+                renderLogin={() => {return "xxxx"}}
                 projectId={window.location.hash.substr(1)}
                 onClickLogo={onClickLogo}
-                canCreateNew
+                // canCreateNew
+                canModifyCloudData
                 onUpdateProjectThumbnail={saveThumbnail}
                 projectHost={'http://127.0.0.1:8000'}
                 assetHost={'http://127.0.0.1:8000/assets'}
