@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {compose} from 'redux';
-
+import xhr from 'xhr';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import GUI from '../containers/gui.jsx';
 import HashParserHOC from '../lib/hash-parser-hoc.jsx';
 import log from '../lib/log.js';
+import {getToken, getTokenName} from '../lib/token.js';
 
 const onClickLogo = () => {
     window.location = 'https://scratch.mit.edu';
@@ -21,6 +22,42 @@ const handleTelemetryModalOptIn = () => {
 
 const handleTelemetryModalOptOut = () => {
     log('User opted out of telemetry');
+};
+
+// 更新封面图
+const saveThumbnail = (projectId, data) => {
+    const headers = {
+        'Content-Type': 'multipart/form-data'
+    };
+    const tokenName = getTokenName();
+    const tokenValue = getToken();
+    if (tokenName && tokenValue) {
+        headers[tokenName] = tokenValue;
+    }
+
+    const opts = {
+        method: 'put',
+        url: `http://127.0.0.1:8000/thumbnail/${projectId}`,
+        body: data,
+        headers,
+        withCredentials: true
+    };
+    new Promise((resolve, reject) => {
+        xhr(opts, (err, response) => {
+            if (err) return reject(err);
+            if (response.statusCode !== 200) return reject(response.statusCode);
+            let body;
+            try {
+                // Since we didn't set json: true, we have to parse manually
+                body = JSON.parse(response.body);
+            } catch (e) {
+                return reject(e);
+            }
+            body.id = projectId;
+
+            resolve(body);
+        });
+    }).then(res => log.debug(res));
 };
 
 /*
@@ -76,10 +113,17 @@ export default appTarget => {
             <WrappedGui
                 canEditTitle
                 backpackVisible
-                showComingSoon
+                showComingSoon={false}
                 backpackHost={backpackHost}
-                canSave={false}
+                canSave
+                username={'noxue'}
+                renderLogin={()=>{return "xxxx"}}
+                projectId={window.location.hash.substr(1)}
                 onClickLogo={onClickLogo}
+                canCreateNew
+                onUpdateProjectThumbnail={saveThumbnail}
+                projectHost={'http://127.0.0.1:8000'}
+                assetHost={'http://127.0.0.1:8000/assets'}
             />,
         appTarget);
 };

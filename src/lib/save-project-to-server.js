@@ -1,6 +1,7 @@
 import queryString from 'query-string';
 import xhr from 'xhr';
 import storage from '../lib/storage';
+import { getTokenName, getToken } from './token';
 
 /**
  * Save a project JSON to the project server.
@@ -25,21 +26,32 @@ export default function (projectId, vmState, params) {
     };
     const creatingProject = projectId === null || typeof projectId === 'undefined';
     const queryParams = {};
+
     if (params.hasOwnProperty('originalId')) queryParams.original_id = params.originalId;
     if (params.hasOwnProperty('isCopy')) queryParams.is_copy = params.isCopy;
     if (params.hasOwnProperty('isRemix')) queryParams.is_remix = params.isRemix;
     if (params.hasOwnProperty('title')) queryParams.title = params.title;
+
+
+    const headers = {};
+    const tokenName = getTokenName();
+    const tokenValue = getToken();
+    if (tokenName && tokenValue) {
+        headers[tokenName] = tokenValue;
+    }
     let qs = queryString.stringify(queryParams);
     if (qs) qs = `?${qs}`;
     if (creatingProject) {
         Object.assign(opts, {
             method: 'post',
-            url: `${storage.projectHost}/${qs}`
+            url: `${storage.projectHost}/${qs}`,
+            headers
         });
     } else {
         Object.assign(opts, {
             method: 'put',
-            url: `${storage.projectHost}/${projectId}${qs}`
+            url: `${storage.projectHost}/${projectId}${qs}`,
+            headers
         });
     }
     return new Promise((resolve, reject) => {

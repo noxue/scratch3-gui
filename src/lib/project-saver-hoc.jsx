@@ -217,6 +217,9 @@ const ProjectSaverHOC = function (WrappedComponent) {
          * @param {?object} requestParams - object of params to add to request body
          */
         storeProject (projectId, requestParams) {
+            // debugger;
+            log.debug(this.props);
+            
             requestParams = requestParams || {};
             this.clearAutoSaveTimeout();
             // Serialize VM state now before embarking on
@@ -226,6 +229,9 @@ const ProjectSaverHOC = function (WrappedComponent) {
             // serialized project refers to a newer asset than what
             // we just finished saving).
             const savedVMState = this.props.vm.toJSON();
+            
+            requestParams.title = this.props.reduxProjectTitle;
+            // requestParams.projectChanged
             return Promise.all(this.props.vm.assets
                 .filter(asset => !asset.clean)
                 .map(
