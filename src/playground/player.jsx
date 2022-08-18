@@ -2,15 +2,15 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 
 import Box from '../components/box/box.jsx';
 import GUI from '../containers/gui.jsx';
 import HashParserHOC from '../lib/hash-parser-hoc.jsx';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 
-import {setPlayer} from '../reducers/mode';
+import { setPlayer } from '../reducers/mode';
 
 if (process.env.NODE_ENV === 'production' && typeof window === 'object') {
     // Warn before navigating away
@@ -19,22 +19,22 @@ if (process.env.NODE_ENV === 'production' && typeof window === 'object') {
 
 import styles from './player.css';
 
-const Player = ({isPlayerOnly, onSeeInside, projectId}) => (
-    <Box className={classNames(isPlayerOnly ? styles.stageOnly : styles.editor)}>
-        {isPlayerOnly && <button onClick={onSeeInside}>{'See inside'}</button>}
+const Player = ({projectId, projectHost, assetHost}) => (
+    <Box className={classNames(styles.stageOnly)}>
         <GUI
-            canEditTitle
-            enableCommunity
-            isPlayerOnly={isPlayerOnly}
+            showBranding
+            isPlayerOnly
             projectId={projectId}
+            projectHost={projectHost}
+            assetHost={assetHost}
         />
     </Box>
 );
 
 Player.propTypes = {
-    isPlayerOnly: PropTypes.bool,
-    onSeeInside: PropTypes.func,
-    projectId: PropTypes.string
+    projectId: PropTypes.string,
+    projectHost: PropTypes.string,
+    assetHost: PropTypes.string
 };
 
 const mapStateToProps = state => ({
@@ -58,7 +58,14 @@ const WrappedPlayer = compose(
     HashParserHOC
 )(ConnectedPlayer);
 
-const appTarget = document.createElement('div');
+const appTarget = document.getElementById('scratch-player') ?? document.createElement('div');
+const projectHost = 'http://127.0.0.1:8000/api/scratch/projects';
+const assetHost = 'http://127.0.0.1:8000/assets';
+
 document.body.appendChild(appTarget);
 
-ReactDOM.render(<WrappedPlayer isPlayerOnly />, appTarget);
+ReactDOM.render(<WrappedPlayer
+    isPlayerOnly
+    projectHost={projectHost}
+    assetHost={assetHost}
+/>, appTarget);
