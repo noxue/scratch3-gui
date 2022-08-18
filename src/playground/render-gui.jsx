@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {compose} from 'redux';
+import { compose } from 'redux';
 import xhr from 'xhr';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import GUI from '../containers/gui.jsx';
 import HashParserHOC from '../lib/hash-parser-hoc.jsx';
 import log from '../lib/log.js';
-import {getToken, getTokenName} from '../lib/token.js';
+import { getToken, getTokenName, getUser } from '../lib/user.js';
+import { getParam } from '../lib/query.js';
 
 const onClickLogo = () => {
-    window.location = 'https://scratch.mit.edu';
+    window.location = 'https://noxue.com';
 };
 
 const handleTelemetryModalCancel = () => {
@@ -23,6 +24,13 @@ const handleTelemetryModalOptIn = () => {
 const handleTelemetryModalOptOut = () => {
     log('User opted out of telemetry');
 };
+
+const token = getToken();
+setInterval(() => {
+    if (token !== getToken()) {
+        window.location.reload();
+    }
+}, 3000);
 
 // 更新封面图
 const saveThumbnail = (projectId, data) => {
@@ -98,6 +106,8 @@ export default appTarget => {
         window.onbeforeunload = () => true;
     }
 
+    const id = getParam('id') ?? 0;
+    
     ReactDOM.render(
         // important: this is checking whether `simulateScratchDesktop` is truthy, not just defined!
         simulateScratchDesktop ?
@@ -112,17 +122,17 @@ export default appTarget => {
             /> :
             <WrappedGui
                 canEditTitle
-                backpackVisible
                 showComingSoon={false}
-                backpackHost={backpackHost}
-                // canSave
-                renderLogin={() => {return "xxxx"}}
-                projectId={window.location.hash.substr(1)}
+                // backpackHost="http://127.0.0.1:8000/backpack"
+                canSave={!!(getToken() && getUser())}
+                canCreateNew={!!(getToken() && getUser())}
+                // renderLogin={() => {return "xxxx";}}
+                projectId={id}
                 onClickLogo={onClickLogo}
-                // canCreateNew
+                logo="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
                 canModifyCloudData
                 onUpdateProjectThumbnail={saveThumbnail}
-                projectHost={'http://127.0.0.1:8000'}
+                projectHost={'http://127.0.0.1:8000/api/scratch/projects'}
                 assetHost={'http://127.0.0.1:8000/assets'}
             />,
         appTarget);

@@ -661,41 +661,27 @@ class MenuBar extends React.Component {
                             // ********* user not logged in, but a session exists
                             // ********* so they can choose to log in
                             <React.Fragment>
-                                <div
+                                <a
+                                    href="https://noxue.com/reg"
                                     className={classNames(
                                         styles.menuBarItem,
                                         styles.hoverable
                                     )}
+                                    target="new"
                                     key="join"
-                                    onMouseUp={this.props.onOpenRegistration}
-                                >
-                                    <FormattedMessage
-                                        defaultMessage="Join Scratch"
-                                        description="Link for creating a Scratch account"
-                                        id="gui.menuBar.joinScratch"
-                                    />
-                                </div>
-                                <div
+                                // eslint-disable-next-line react/jsx-no-literals
+                                >注册</a>
+                                <a
+                                    href="https://noxue.com/login"
                                     className={classNames(
                                         styles.menuBarItem,
                                         styles.hoverable
                                     )}
                                     key="login"
-                                    onMouseUp={this.props.onClickLogin}
+                                // eslint-disable-next-line react/jsx-no-literals
                                 >
-                                    <FormattedMessage
-                                        defaultMessage="Sign in"
-                                        description="Link for signing in to your Scratch account"
-                                        id="gui.menuBar.signIn"
-                                    />
-                                    <LoginDropdown
-                                        className={classNames(styles.menuBarMenu)}
-                                        isOpen={this.props.loginMenuOpen}
-                                        isRtl={this.props.isRtl}
-                                        renderLogin={this.props.renderLogin}
-                                        onClose={this.props.onRequestCloseLogin}
-                                    />
-                                </div>
+                                    登录
+                                </a>
                             </React.Fragment>
                         )
                     ) : (

@@ -1,7 +1,7 @@
 import queryString from 'query-string';
 import xhr from 'xhr';
 import storage from '../lib/storage';
-import { getTokenName, getToken } from './token';
+import {getTokenName, getToken} from './user';
 
 /**
  * Save a project JSON to the project server.

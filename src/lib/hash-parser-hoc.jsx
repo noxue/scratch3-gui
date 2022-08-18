@@ -8,6 +8,7 @@ import {
     getIsFetchingWithoutId,
     setProjectId
 } from '../reducers/project-state';
+import {getParam} from './query';
 
 /* Higher Order Component to get the project id from location.hash
  * @param {React.Component} WrappedComponent: component to render
@@ -37,8 +38,13 @@ const HashParserHOC = function (WrappedComponent) {
             window.removeEventListener('hashchange', this.handleHashChange);
         }
         handleHashChange () {
-            const hashMatch = window.location.hash.match(/#(\d+)/);
-            const hashProjectId = hashMatch === null ? defaultProjectId : hashMatch[1];
+            // const hashMatch = window.location.hash.match(/#(\d+)/);
+            // const hashProjectId = hashMatch === null ? defaultProjectId : hashMatch[1];
+
+            // 改从url参数中获取作品编号
+            const id = getParam('id');
+            const hashProjectId = id ?? defaultProjectId;
+
             this.props.setProjectId(hashProjectId.toString());
         }
         render () {
