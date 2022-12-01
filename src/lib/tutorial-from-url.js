@@ -4,7 +4,7 @@
  */
 
 import tutorials from './libraries/decks/index.jsx';
-import analytics from './analytics';
+
 
 /**
  * Get the tutorial id from the given numerical id (representing the
@@ -16,11 +16,6 @@ import analytics from './analytics';
 const getDeckIdFromUrlId = urlId => {
     for (const deckId in tutorials) {
         if (tutorials[deckId].urlId === urlId) {
-            analytics.event({
-                category: 'how-to',
-                action: 'load from url',
-                label: `${deckId}`
-            });
             return deckId;
         }
     }
