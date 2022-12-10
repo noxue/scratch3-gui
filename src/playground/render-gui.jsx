@@ -107,6 +107,7 @@ export default appTarget => {
     }
 
     const id = getParam('id') ?? 0;
+    const title = getParam('title') ?? "";
     
     ReactDOM.render(
         // important: this is checking whether `simulateScratchDesktop` is truthy, not just defined!
@@ -128,6 +129,7 @@ export default appTarget => {
                 canCreateNew={!!(getToken() && getUser())}
                 // renderLogin={() => {return "xxxx";}}
                 projectId={id}
+                projectTitle={title}
                 onClickLogo={onClickLogo}
                 logo="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
                 canModifyCloudData
