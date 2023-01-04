@@ -629,7 +629,7 @@ class MenuBar extends React.Component {
                         this.props.username ? (
                             // ************ user is logged in ************
                             <React.Fragment>
-                                <a href="/mystuff/">
+                                {/* <a href="/mystuff/">
                                     <div
                                         className={classNames(
                                             styles.menuBarItem,
@@ -642,7 +642,7 @@ class MenuBar extends React.Component {
                                             src={mystuffIcon}
                                         />
                                     </div>
-                                </a>
+                                </a> */}
                                 <AccountNav
                                     className={classNames(
                                         styles.menuBarItem,
@@ -662,7 +662,7 @@ class MenuBar extends React.Component {
                             // ********* so they can choose to log in
                             <React.Fragment>
                                 <a
-                                    href="https://noxue.com/reg"
+                                    href="/register"
                                     className={classNames(
                                         styles.menuBarItem,
                                         styles.hoverable
@@ -672,7 +672,7 @@ class MenuBar extends React.Component {
                                 // eslint-disable-next-line react/jsx-no-literals
                                 >注册</a>
                                 <a
-                                    href="https://noxue.com/login"
+                                    href="/login"
                                     className={classNames(
                                         styles.menuBarItem,
                                         styles.hoverable

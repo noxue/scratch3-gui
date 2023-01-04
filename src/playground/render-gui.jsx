@@ -8,10 +8,14 @@ import HashParserHOC from '../lib/hash-parser-hoc.jsx';
 import log from '../lib/log.js';
 import { getToken, getTokenName, getUser } from '../lib/user.js';
 import { getParam } from '../lib/query.js';
+import logo from "./logo.png";
 
 const onClickLogo = () => {
-    window.location = 'https://noxue.com';
+    window.location = '/';
 };
+
+// const API_HOST = 'http://api.s.noxue.com';
+const API_HOST = 'http://api.hnhdy.net';
 
 const handleTelemetryModalCancel = () => {
     log('User canceled telemetry modal');
@@ -45,7 +49,7 @@ const saveThumbnail = (projectId, data) => {
 
     const opts = {
         method: 'put',
-        url: `http://127.0.0.1:8000/thumbnail/${projectId}`,
+        url: `${API_HOST}/thumbnail/${projectId}`,
         body: data,
         headers,
         withCredentials: true
@@ -107,7 +111,7 @@ export default appTarget => {
     }
 
     const id = getParam('id') ?? 0;
-    const title = getParam('title') ?? "";
+    const title = decodeURIComponent(getParam('title')) ?? "";
     
     ReactDOM.render(
         // important: this is checking whether `simulateScratchDesktop` is truthy, not just defined!
@@ -131,11 +135,11 @@ export default appTarget => {
                 projectId={id}
                 projectTitle={title}
                 onClickLogo={onClickLogo}
-                logo="https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
+                logo={logo}
                 canModifyCloudData
                 onUpdateProjectThumbnail={saveThumbnail}
-                projectHost={'http://127.0.0.1:8000/api/scratch/projects'}
-                assetHost={'http://127.0.0.1:8000/assets'}
+                projectHost={`${API_HOST}/api/scratch/projects`}
+                assetHost={`${API_HOST}/assets`}
             />,
         appTarget);
 };
